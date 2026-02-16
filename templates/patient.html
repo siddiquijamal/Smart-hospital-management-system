@@ -73,6 +73,11 @@
 </head>
 
 <body>
+  {% extends "base.html" %}
+
+{% block title %}Appointments | MediCare{% endblock %}
+
+{% block content %}
   <div class="container page-wrap">
 
     <!-- Header -->
@@ -195,5 +200,6 @@
     </div>
 
   </div>
+  {% endblock %}
 </body>
 </html>

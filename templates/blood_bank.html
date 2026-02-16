@@ -224,24 +224,13 @@
 
 <body>
 
+{% extends "base.html" %}
 
-<nav class="navbar topbar">
-  <div class="container py-2">
-    <div class="d-flex align-items-center">
-      <span class="brand-dot"></span>
-      <div>
-        <div class="fw-bold" style="letter-spacing:-0.02em;">Hospital Management System</div>
-        <div class="small text-secondary">Blood Bank</div>
-      </div>
-    </div>
+{% block title %}Appointments | MediCare{% endblock %}
 
-    <div class="d-flex gap-2">
-     
-      <a href="{% url 'home' %}" class="btn btn-outline btn-sm">Home</a>
-      <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
-    </div>
-  </div>
-</nav>
+{% block content %}
+
+
 
 <div class="container py-4">
 
@@ -593,6 +582,9 @@
 
   applyFilters();
 </script>
+{% endblock %}
+
+
 
 </body>
 </html>
