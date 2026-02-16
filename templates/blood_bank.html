@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Blood Bank | Hospital</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f8ff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line: rgba(15,23,42,.08);
+      --shadow: 0 18px 44px rgba(2, 6, 23, 0.08);
+      --shadow2: 0 10px 24px rgba(2, 6, 23, 0.08);
+      --radius: 18px;
+      --brand: #2563eb;
+      --danger: #ef4444;
+      --success: #16a34a;
+    }
+
+    body{
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% 0%, #eef6ff, transparent 60%),
+        radial-gradient(1200px 600px at 90% 10%, #f3e8ff, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand-dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: var(--brand);
+      box-shadow: 0 0 0 6px rgba(37,99,235,.12);
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .hero{
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(239,68,68,.12), rgba(37,99,235,.08));
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      right:-80px; top:-80px;
+      width:240px; height:240px;
+      background: radial-gradient(circle, rgba(239,68,68,.18), transparent 60%);
+      border-radius: 999px;
+    }
+    .hero h1{
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .hero p{
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .soft-card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-head{
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #f8fafc, #fff);
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      font-weight: 700;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .blood-card{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+      transition: transform .12s ease, box-shadow .12s ease;
+      overflow: hidden;
+      height: 100%;
+    }
+    .blood-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(2,6,23,.10);
+    }
+
+    .blood-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      border: 1px solid rgba(239,68,68,.20);
+      background: rgba(239,68,68,.10);
+      color: #991b1b;
+    }
+    .blood-drop{
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      background: rgba(239,68,68,.14);
+      border: 1px solid rgba(239,68,68,.18);
+      font-size: 18px;
+    }
+
+    .meta{
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .meta strong{ color: var(--text); }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: .82rem;
+      border: 1px solid;
+    }
+    .dot{ width: 8px; height: 8px; border-radius: 999px; display:inline-block; }
+
+    .in-stock{
+      color:#065f46;
+      background: rgba(16,185,129,.14);
+      border-color: rgba(16,185,129,.25);
+    }
+    .in-stock .dot{ background:#10b981; }
+
+    .low-stock{
+      color:#92400e;
+      background: rgba(245,158,11,.14);
+      border-color: rgba(245,158,11,.25);
+    }
+    .low-stock .dot{ background:#f59e0b; }
+
+    .out-stock{
+      color:#7f1d1d;
+      background: rgba(239,68,68,.12);
+      border-color: rgba(239,68,68,.22);
+    }
+    .out-stock .dot{ background:#ef4444; }
+
+    .btn-modern{
+      border-radius: 14px;
+      font-weight: 800;
+      padding: 10px 12px;
+    }
+    .btn-buy{
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      border: 0;
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(239,68,68,.22);
+    }
+    .btn-buy:hover{ filter: brightness(.98); color:#fff; }
+
+    .btn-outline{
+      border-radius: 14px;
+      font-weight: 800;
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.75);
+    }
+
+    .table thead th{
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #475569;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line) !important;
+      padding: 14px 16px;
+    }
+    .table tbody td{
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: .9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+
+<nav class="navbar topbar">
+  <div class="container py-2">
+    <div class="d-flex align-items-center">
+      <span class="brand-dot"></span>
+      <div>
+        <div class="fw-bold" style="letter-spacing:-0.02em;">Hospital Management System</div>
+        <div class="small text-secondary">Blood Bank</div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+     
+      <a href="{% url 'home' %}" class="btn btn-outline btn-sm">Home</a>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <div class="hero p-3 p-md-4 mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 position-relative">
+      <div>
+        <h1 class="h3 mb-1">Blood Bank Inventory</h1>
+        <p>Check availability and request blood units directly from the hospital.</p>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <span class="pill">🩸 Safe & screened</span>
+        <span class="pill">⏱️ Quick request</span>
+        <span class="pill">📍 In-hospital pickup</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="soft-card mb-4">
+    <div class="card-head">
+      <div class="row g-2 align-items-center">
+        <div class="col-12 col-md-4">
+          <label class="form-label mb-1 fw-semibold">Search blood group</label>
+          <input id="searchInput" class="form-control" placeholder="Type: A+, O-, AB+ ..." />
+        </div>
+
+        <div class="col-6 col-md-3">
+          <label class="form-label mb-1 fw-semibold">Filter status</label>
+          <select id="statusFilter" class="form-select">
+            <option value="all">All</option>
+            <option value="in">In stock</option>
+            <option value="low">Low stock</option>
+            <option value="out">Out of stock</option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3">
+          <label class="form-label mb-1 fw-semibold">Sort by</label>
+          <select id="sortBy" class="form-select">
+            <option value="group">Blood group</option>
+            <option value="units">Units (high → low)</option>
+            <option value="price">Price (low → high)</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-2 d-grid">
+          <label class="form-label mb-1 fw-semibold opacity-0">.</label>
+          <button id="resetBtn" class="btn btn-outline">Reset</button>
+        </div>
+      </div>
+
+      <div class="hint mt-3">
+        Tip: Connect this page with your database later using a <b>BloodStock</b> model.
+      </div>
+    </div>
+
+ 
+    <div class="p-3 p-md-4">
+      <div class="row g-3" id="inventoryGrid">
+
+       
+        <div class="col-12 col-md-6 col-lg-4 item" data-group="A+" data-units="12" data-price="1200" data-status="in">
+          <div class="blood-card p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="blood-badge">
+                <span class="blood-drop">🩸</span>
+                <span>A+</span>
+              </div>
+              <span class="status in-stock"><span class="dot"></span> In stock</span>
+            </div>
+
+            <div class="mt-3 meta">
+              <div>Available units: <strong>12</strong></div>
+              <div>Price / unit: <strong>₹1200</strong></div>
+              <div class="small">Last updated: <strong>Today</strong></div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+              <!-- Connect to Django: {% url 'buy_blood' 'A+' %} -->
+              <button class="btn btn-modern btn-buy w-100" data-bs-toggle="modal" data-bs-target="#buyModal" data-group-label="A+" data-price-label="1200">
+                Buy / Request
+              </button>
+              <button class="btn btn-modern btn-outline w-100" data-bs-toggle="modal" data-bs-target="#detailModal" data-group-label="A+" data-units-label="12" data-status-label="In stock">
+                Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 item" data-group="O-" data-units="3" data-price="1500" data-status="low">
+          <div class="blood-card p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="blood-badge">
+                <span class="blood-drop">🩸</span>
+                <span>O-</span>
+              </div>
+              <span class="status low-stock"><span class="dot"></span> Low stock</span>
+            </div>
+
+            <div class="mt-3 meta">
+              <div>Available units: <strong>3</strong></div>
+              <div>Price / unit: <strong>₹1500</strong></div>
+              <div class="small">Last updated: <strong>Today</strong></div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-modern btn-buy w-100" data-bs-toggle="modal" data-bs-target="#buyModal" data-group-label="O-" data-price-label="1500">
+                Buy / Request
+              </button>
+              <button class="btn btn-modern btn-outline w-100" data-bs-toggle="modal" data-bs-target="#detailModal" data-group-label="O-" data-units-label="3" data-status-label="Low stock">
+                Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 item" data-group="AB+" data-units="0" data-price="1600" data-status="out">
+          <div class="blood-card p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="blood-badge">
+                <span class="blood-drop">🩸</span>
+                <span>AB+</span>
+              </div>
+              <span class="status out-stock"><span class="dot"></span> Out of stock</span>
+            </div>
+
+            <div class="mt-3 meta">
+              <div>Available units: <strong>0</strong></div>
+              <div>Price / unit: <strong>₹1600</strong></div>
+              <div class="small">Last updated: <strong>Today</strong></div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-modern btn-buy w-100" disabled>
+                Not available
+              </button>
+              <button class="btn btn-modern btn-outline w-100" data-bs-toggle="modal" data-bs-target="#detailModal" data-group-label="AB+" data-units-label="0" data-status-label="Out of stock">
+                Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="my-4">
+
+      
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+        <div class="fw-bold">Quick Table View</div>
+        <div class="hint">This can be powered by DB later.</div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Blood Group</th>
+              <th>Units Available</th>
+              <th>Price / Unit</th>
+              <th>Status</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td class="fw-bold">A+</td>
+              <td>12</td>
+              <td>₹1200</td>
+              <td><span class="status in-stock"><span class="dot"></span> In stock</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-buy btn-modern" data-bs-toggle="modal" data-bs-target="#buyModal" data-group-label="A+" data-price-label="1200">Buy</button>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold">O-</td>
+              <td>3</td>
+              <td>₹1500</td>
+              <td><span class="status low-stock"><span class="dot"></span> Low stock</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-buy btn-modern" data-bs-toggle="modal" data-bs-target="#buyModal" data-group-label="O-" data-price-label="1500">Buy</button>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold">AB+</td>
+              <td>0</td>
+              <td>₹1600</td>
+              <td><span class="status out-stock"><span class="dot"></span> Out of stock</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-modern btn-outline" disabled>Not available</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="hint text-center pb-3">
+    Note: Always follow hospital rules & eligibility checks for blood purchase/request.
+  </div>
+
+</div>
+
+<!-- Buy Modal -->
+<div class="modal fade" id="buyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 18px; border:1px solid rgba(15,23,42,.08);">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Request Blood Unit</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form method="post" action="#">
+        <!-- when you connect backend: action="{% url 'buy_blood' 'A+' %}" -->
+        <div class="modal-body">
+          {% csrf_token %}
+          <div class="mb-2 hint">Selected blood group</div>
+          <div class="blood-badge mb-3" id="modalGroupBadge">
+            <span class="blood-drop">🩸</span>
+            <span id="modalGroupText">A+</span>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Units</label>
+              <input type="number" min="1" value="1" class="form-control" name="units" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Price / unit</label>
+              <input type="text" class="form-control" id="modalPrice" value="₹1200" disabled>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <label class="form-label fw-semibold">Reason (optional)</label>
+            <textarea class="form-control" name="reason" rows="2" placeholder="Example: Surgery / Emergency"></textarea>
+          </div>
+
+          <input type="hidden" name="blood_group" id="modalGroupInput" value="A+">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-buy btn-modern">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 18px; border:1px solid rgba(15,23,42,.08);">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Blood Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="blood-badge mb-3">
+          <span class="blood-drop">🩸</span>
+          <span id="detailGroup">A+</span>
+        </div>
+
+        <div class="meta">
+          <div class="mb-2">Units available: <strong id="detailUnits">12</strong></div>
+          <div class="mb-2">Status: <strong id="detailStatus">In stock</strong></div>
+          <div class="hint mt-2">All units are tested and stored under standard blood bank protocols.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-modern" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Modal: Buy
+  const buyModal = document.getElementById('buyModal');
+  buyModal.addEventListener('show.bs.modal', function (event) {
+    const btn = event.relatedTarget;
+    const group = btn.getAttribute('data-group-label') || 'A+';
+    const price = btn.getAttribute('data-price-label') || '1200';
+
+    document.getElementById('modalGroupText').innerText = group;
+    document.getElementById('modalGroupInput').value = group;
+    document.getElementById('modalPrice').value = '₹' + price;
+  });
+
+  // Modal: Details
+  const detailModal = document.getElementById('detailModal');
+  detailModal.addEventListener('show.bs.modal', function (event) {
+    const btn = event.relatedTarget;
+    document.getElementById('detailGroup').innerText = btn.getAttribute('data-group-label') || '-';
+    document.getElementById('detailUnits').innerText = btn.getAttribute('data-units-label') || '-';
+    document.getElementById('detailStatus').innerText = btn.getAttribute('data-status-label') || '-';
+  });
+
+  // Filtering + searching + sorting (front-end only demo)
+  const searchInput = document.getElementById('searchInput');
+  const statusFilter = document.getElementById('statusFilter');
+  const sortBy = document.getElementById('sortBy');
+  const resetBtn = document.getElementById('resetBtn');
+  const grid = document.getElementById('inventoryGrid');
+
+  function applyFilters(){
+    const q = (searchInput.value || '').trim().toUpperCase();
+    const st = statusFilter.value;
+
+    const items = Array.from(grid.querySelectorAll('.item'));
+
+    // filter
+    items.forEach(el => {
+      const group = (el.dataset.group || '').toUpperCase();
+      const status = el.dataset.status;
+      const matchQ = !q || group.includes(q);
+      const matchS = (st === 'all') || (st === status);
+      el.style.display = (matchQ && matchS) ? '' : 'none';
+    });
+
+    // sort visible items
+    const visible = items.filter(el => el.style.display !== 'none');
+    visible.sort((a,b)=>{
+      if(sortBy.value === 'units'){
+        return parseInt(b.dataset.units) - parseInt(a.dataset.units);
+      }
+      if(sortBy.value === 'price'){
+        return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+      }
+      // group
+      return (a.dataset.group).localeCompare(b.dataset.group);
+    });
+    visible.forEach(el => grid.appendChild(el));
+  }
+
+  [searchInput, statusFilter, sortBy].forEach(x => x.addEventListener('input', applyFilters));
+  resetBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    statusFilter.value = 'all';
+    sortBy.value = 'group';
+    applyFilters();
+  });
+
+  applyFilters();
+</script>
+
+</body>
+</html>

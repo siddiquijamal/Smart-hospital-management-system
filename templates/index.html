@@ -1,0 +1,585 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Clinic - HMS</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand: #2d5bff;         
+      --brand-dark: #1e3fd6;
+      --soft-bg: #f6f8ff;       
+      --card-border: rgba(15, 23, 42, 0.10);
+      --text-muted2: rgba(15, 23, 42, 0.70);
+      --footer-bg: #0b1220;
+    }
+
+    body{
+      background: #fff;
+      color: #0f172a;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+   
+    .nav-glass{
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(15,23,42,0.08);
+    }
+    .brand-badge{
+      width: 38px; height: 38px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      background: rgba(45, 91, 255, 0.12);
+      color: var(--brand);
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    .nav-link{
+      color:#334155 !important;
+      font-weight: 500;
+    }
+    .nav-link:hover{ color: var(--brand) !important; }
+
+    .btn-brand{
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 600;
+    }
+    .btn-brand:hover{
+      background: var(--brand-dark);
+      border-color: var(--brand-dark);
+      color:#fff;
+    }
+    .btn-ghost{
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 600;
+      border: 1px solid rgba(15,23,42,0.12);
+      background: #fff;
+    }
+
+
+    .hero{
+      background: var(--soft-bg);
+      padding: 80px 0 50px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border: 1px solid rgba(45, 91, 255, 0.18);
+      background: rgba(45, 91, 255, 0.10);
+      color: var(--brand);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .hero-title{
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-top: 18px;
+    }
+    .hero-sub{
+      max-width: 760px;
+      margin: 18px auto 0;
+      color: var(--text-muted2);
+      font-size: 18px;
+    }
+
+    .section{
+      padding: 70px 0;
+    }
+    .section-title{
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .section-sub{
+      color: var(--text-muted2);
+      margin-top: 10px;
+    }
+
+
+    .soft-card{
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(2, 6, 23, 0.06);
+      background: #fff;
+    }
+    .feature-icon{
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .icon-blue{ background: linear-gradient(135deg, #2d5bff, #3fb6ff); }
+    .icon-purple{ background: linear-gradient(135deg, #6d28d9, #ec4899); }
+    .icon-pink{ background: linear-gradient(135deg, #ec4899, #fb7185); }
+    .icon-orange{ background: linear-gradient(135deg, #f97316, #f59e0b); }
+    .icon-green{ background: linear-gradient(135deg, #22c55e, #10b981); }
+
+    .card-title{
+      font-weight: 800;
+      margin-top: 16px;
+      font-size: 20px;
+    }
+    .card-text{
+      color: var(--text-muted2);
+      margin-top: 8px;
+    }
+
+  
+    .stat{
+      text-align: center;
+      padding-top: 25px;
+    }
+    .stat h3{
+      font-weight: 900;
+      margin-bottom: 4px;
+      font-size: 32px;
+    }
+    .stat p{
+      color: var(--text-muted2);
+      margin: 0;
+      font-weight: 500;
+    }
+
+*/
+    footer{
+      background: var(--footer-bg);
+      color: rgba(255,255,255,0.82);
+      padding: 40px 0;
+    }
+    footer a{ color: rgba(255,255,255,0.80); text-decoration:none; }
+    footer a:hover{ color:#fff; }
+    .footer-title{ color:#fff; font-weight: 800; margin-bottom: 12px; }
+
+
+    .service-card{
+      text-align: center;
+      padding: 30px;
+    }
+    .service-emoji{
+      font-size: 44px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg nav-glass sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
+      <span class="brand-badge"><i class="bi bi-heart-pulse"></i></span>
+      MediCare
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+     
+      <ul class="navbar-nav mx-auto gap-lg-3">
+        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+
+   
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        {% if logged_user %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle me-1"></i>{{ logged_user.fullname }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-brand btn-sm" href="{% url 'appointment' %}">Get Started</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{% url 'loginpage' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-brand btn-sm" href="{% url 'signuppage' %}">Get Started</a>
+          </li>
+        {% endif %}
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+  <div class="container text-center">
+    <div class="pill mx-auto">
+      <i class="bi bi-activity"></i>
+      Modern Healthcare Management
+    </div>
+
+    <h1 class="hero-title">Transform Your Clinic<br/>Operations</h1>
+    <p class="hero-sub">
+      Streamline appointments, manage patient records, and enhance healthcare delivery
+      with our comprehensive clinic management system.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+      <a href="{% url 'appointment' %}" class="btn btn-brand">Start Free Trial</a>
+      <a href="#features" class="btn btn-ghost">Watch Demo</a>
+    </div>
+
+    
+    <div class="row mt-5 g-4">
+      <div class="col-6 col-lg-3 stat">
+        <h3>10k+</h3><p>Patients Served</p>
+      </div>
+      <div class="col-6 col-lg-3 stat">
+        <h3>500+</h3><p>Active Doctors</p>
+      </div>
+      <div class="col-6 col-lg-3 stat">
+        <h3>99.9%</h3><p>Uptime</p>
+      </div>
+      <div class="col-6 col-lg-3 stat">
+        <h3>24/7</h3><p>Support</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features" class="section">
+  <div class="container text-center">
+    <h2 class="section-title">Powerful Features</h2>
+    <p class="section-sub">Everything you need to run a modern clinic efficiently</p>
+
+    <div class="row g-4 mt-4 text-start">
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-blue"><i class="bi bi-calendar2-check"></i></div>
+          <div class="card-title">Smart Scheduling</div>
+          <div class="card-text">Intelligent appointment booking with automated slot management and conflict prevention.</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-purple"><i class="bi bi-people"></i></div>
+          <div class="card-title">Patient Management</div>
+          <div class="card-text">Complete patient records, medical history, and digital health profiles.</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-purple"><i class="bi bi-clock-history"></i></div>
+          <div class="card-title">Queue System</div>
+          <div class="card-text">Real-time token-based queue management for smooth patient flow.</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-pink"><i class="bi bi-file-earmark-medical"></i></div>
+          <div class="card-title">Digital Prescriptions</div>
+          <div class="card-text">Create, manage, and share prescriptions digitally with patients.</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-orange"><i class="bi bi-graph-up"></i></div>
+          <div class="card-title">Analytics Dashboard</div>
+          <div class="card-text">Real-time insights into appointments, revenue, and clinic performance.</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card p-4 h-100">
+          <div class="feature-icon icon-green"><i class="bi bi-shield-check"></i></div>
+          <div class="card-title">Role-Based Access</div>
+          <div class="card-text">Secure access control for admin, doctors, receptionists, and patients.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUICK ACTIONS  ================= -->
+<section class="section" style="background: var(--soft-bg);">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="section-title">Dashboard Shortcuts</h2>
+      <p class="section-sub">Quick access to your most used modules</p>
+    </div>
+
+    <div class="row g-4 mt-4">
+      <div class="col-md-3">
+        <div class="soft-card p-4 h-100 text-center">
+          <div class="feature-icon icon-blue mx-auto"><i class="bi bi-calendar-check"></i></div>
+          <div class="card-title">Book Appointment</div>
+          <p class="card-text">Schedule doctor visits easily</p>
+          <a href="{% url 'appointment' %}" class="btn btn-ghost w-100">Book Now</a>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="soft-card p-4 h-100 text-center">
+          <div class="feature-icon icon-purple mx-auto"><i class="bi bi-card-checklist"></i></div>
+          <div class="card-title">My Appointments</div>
+          <p class="card-text">See appointment status</p>
+          <a href="{% url 'my_appointments' %}" class="btn btn-ghost w-100">View</a>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="soft-card p-4 h-100 text-center">
+          <div class="feature-icon icon-pink mx-auto"><i class="bi bi-heart-pulse"></i></div>
+          <div class="card-title">Doctors</div>
+          <p class="card-text">View available specialists</p>
+          <a href="{% url 'doctor_detail' %}" class="btn btn-ghost w-100">View</a>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="soft-card p-4 h-100 text-center">
+          <div class="feature-icon icon-orange mx-auto"><i class="bi bi-droplet-half"></i></div>
+          <div class="card-title">Blood Bank</div>
+          <p class="card-text">Check blood availability</p>
+          <a href="{% url 'blood_bank' %}" class="btn btn-ghost w-100">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services" class="section">
+  <div class="container text-center">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Comprehensive healthcare solutions for your clinic</p>
+
+    <div class="row g-4 mt-4">
+      <div class="col-md-4">
+        <div class="soft-card service-card h-100">
+          <div class="service-emoji">🩺</div>
+          <h4 class="fw-bold">General Medicine</h4>
+          <p class="card-text">Complete primary care services with experienced physicians.</p>
+          <a href="#contact" class="fw-semibold text-decoration-none" style="color:var(--brand);">Learn More →</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card service-card h-100">
+          <div class="service-emoji">👨‍⚕️</div>
+          <h4 class="fw-bold">Specialist Consultation</h4>
+          <p class="card-text">Expert consultations across multiple medical specialties.</p>
+          <a href="#contact" class="fw-semibold text-decoration-none" style="color:var(--brand);">Learn More →</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="soft-card service-card h-100">
+          <div class="service-emoji">🧪</div>
+          <h4 class="fw-bold">Laboratory Services</h4>
+          <p class="card-text">Comprehensive diagnostic and pathology services.</p>
+          <a href="#contact" class="fw-semibold text-decoration-none" style="color:var(--brand);">Learn More →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="section" style="background: var(--soft-bg);">
+  <div class="container text-center">
+    <h2 class="section-title">About MediCare</h2>
+    <p class="section-sub">Revolutionizing healthcare management through technology</p>
+
+    <p class="mx-auto mt-4" style="max-width: 850px; color: var(--text-muted2); font-size: 18px;">
+      MediCare is a comprehensive clinic management platform designed to streamline healthcare operations.
+      We provide hospitals and clinics with the tools they need to deliver exceptional patient care while
+      managing their operations efficiently.
+    </p>
+
+    <div class="row g-4 mt-4 text-start justify-content-center">
+      <div class="col-md-5">
+        <div class="soft-card p-4 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="feature-icon icon-blue"><i class="bi bi-stethoscope"></i></div>
+            <div>
+              <div class="card-title mb-1">Our Mission</div>
+              <div class="card-text">To empower healthcare providers with innovative technology that enhances patient care and operational excellence.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="soft-card p-4 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="feature-icon icon-purple"><i class="bi bi-heart"></i></div>
+            <div>
+              <div class="card-title mb-1">Our Vision</div>
+              <div class="card-text">To become the most trusted healthcare management platform globally, transforming how clinics operate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= CONTACT (YOUR QUERY FORM, MODERN LOOK) ================= -->
+<section id="contact" class="section">
+  <div class="container text-center">
+    <h2 class="section-title">Get in Touch</h2>
+    <p class="section-sub">Have questions? We'd love to hear from you.</p>
+
+    <div class="row g-4 mt-4 text-start justify-content-center">
+      <!-- Contact Info -->
+      <div class="col-md-5">
+        <div class="soft-card p-4 h-100">
+          <h4 class="fw-bold mb-3">Contact Information</h4>
+
+          <div class="d-flex gap-3 mb-3">
+            <div class="feature-icon icon-blue" style="width:42px;height:42px;border-radius:14px;font-size:18px;">
+              <i class="bi bi-telephone"></i>
+            </div>
+            <div>
+              <div class="fw-semibold">Phone</div>
+              <div class="text-muted">+91 90000 00000</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3 mb-3">
+            <div class="feature-icon icon-purple" style="width:42px;height:42px;border-radius:14px;font-size:18px;">
+              <i class="bi bi-envelope"></i>
+            </div>
+            <div>
+              <div class="fw-semibold">Email</div>
+              <div class="text-muted">support@medicare.com</div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3">
+            <div class="feature-icon icon-green" style="width:42px;height:42px;border-radius:14px;font-size:18px;">
+              <i class="bi bi-geo-alt"></i>
+            </div>
+            <div>
+              <div class="fw-semibold">Address</div>
+              <div class="text-muted">Your Clinic Address, Mumbai</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your Query Form -->
+      <div class="col-md-6">
+        <div class="soft-card p-4 h-100">
+          <h4 class="fw-bold mb-3">Send us a Message</h4>
+
+          <form method="post" action="{% url 'query_info' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" name="name" class="form-control form-control-lg" placeholder="Your Name" required>
+            </div>
+
+            <div class="mb-3">
+              <input type="email" name="email" class="form-control form-control-lg" placeholder="Your Email" required>
+            </div>
+
+            <div class="mb-3">
+              <textarea class="form-control form-control-lg" name="query" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+
+            <button class="btn btn-brand w-100" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="d-flex align-items-center mb-2">
+          <span class="brand-badge" style="background:rgba(255,255,255,0.08);color:#fff;">
+            <i class="bi bi-heart-pulse"></i>
+          </span>
+          <span class="footer-title">MediCare</span>
+        </div>
+        <p class="mb-0">Modern clinic management for better healthcare delivery.</p>
+      </div>
+
+      <div class="col-md-3">
+        <div class="footer-title">Product</div>
+        <div class="d-flex flex-column gap-2">
+          <a href="#features">Features</a>
+          <a href="#services">Services</a>
+          <a href="{% url 'appointment' %}">Book Appointment</a>
+          <a href="#contact">Demo</a>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="footer-title">Company</div>
+        <div class="d-flex flex-column gap-2">
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="#">Blog</a>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="footer-title">Legal</div>
+        <div class="d-flex flex-column gap-2">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Compliance</a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="mt-4" style="border-color: rgba(255,255,255,0.12);">
+    <div class="text-center mt-3">
+      © 2026 Hospital Management System | Designed by Jamal
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

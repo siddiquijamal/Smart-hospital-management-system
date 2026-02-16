@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>All Doctors | HMS</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f7f9ff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line: rgba(15,23,42,.10);
+      --shadow: 0 18px 44px rgba(2, 6, 23, .08);
+      --shadow2: 0 10px 24px rgba(2, 6, 23, .08);
+      --radius: 18px;
+      --brand:#2563eb;
+      --good:#16a34a;
+      --warn:#f59e0b;
+    }
+
+    body{
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% 0%, #eef6ff, transparent 60%),
+        radial-gradient(1200px 600px at 90% 10%, #f3e8ff, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .topbar{
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand-dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: var(--brand);
+      box-shadow: 0 0 0 6px rgba(37,99,235,.12);
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .hero{
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(37,99,235,.14), rgba(34,197,94,.10));
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      right:-80px; top:-80px;
+      width:260px; height:260px;
+      background: radial-gradient(circle, rgba(37,99,235,.22), transparent 60%);
+      border-radius: 999px;
+    }
+
+    .soft-card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .doctor-card{
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+      transition: transform .12s ease, box-shadow .12s ease;
+      overflow: hidden;
+      height: 100%;
+    }
+    .doctor-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(2,6,23,.10);
+    }
+
+    .avatar{
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display:grid; place-items:center;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.18);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .badge-soft{
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 800;
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(248,250,252,.9);
+      color: var(--muted);
+      font-size: .82rem;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .dot{ width: 8px; height: 8px; border-radius: 999px; display:inline-block; }
+    .dot-green{ background:#10b981; }
+    .dot-yellow{ background:#f59e0b; }
+
+    .meta{
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .meta strong{ color: var(--text); }
+
+    .btn-modern{
+      border-radius: 14px;
+      font-weight: 900;
+      padding: 10px 14px;
+    }
+    .btn-primary-grad{
+      background: linear-gradient(135deg, #2563eb, #22c55e);
+      border: 0;
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(37,99,235,.22);
+    }
+    .btn-primary-grad:hover{ filter: brightness(.98); color:#fff; }
+    .btn-outline-soft{
+      border-radius: 14px;
+      font-weight: 900;
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.75);
+    }
+
+    .details{
+      border-top: 1px dashed rgba(15,23,42,.14);
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+    .rowline{
+      display:flex; justify-content:space-between; gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(15,23,42,.10);
+    }
+    .rowline:last-child{ border-bottom:none; }
+    .rowline .l{ color: var(--muted); font-weight: 700; }
+    .rowline .r{ font-weight: 800; text-align:right; }
+
+    .hidden-by-filter{ display:none !important; }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar topbar">
+  <div class="container py-2">
+    <div class="d-flex align-items-center">
+      <span class="brand-dot"></span>
+      <div>
+        <div class="fw-bold" style="letter-spacing:-0.02em;">Hospital Management System</div>
+        <div class="small text-secondary">All Doctors</div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="{% url 'home' %}" class="btn btn-outline-soft btn-sm">Home</a>
+      <a href="{% url 'appointmentspage' %}" class="btn btn-outline-soft btn-sm">Book Appointment</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <div class="hero p-3 p-md-4 mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 position-relative">
+      <div>
+        <h1 class="h3 fw-black mb-1">Our Doctors</h1>
+        <p class="text-secondary mb-0">Browse specialization, experience, fee, and OPD timings — then book instantly.</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <span class="badge-soft">🩺 Verified</span>
+        <span class="badge-soft">⏱️ OPD Timings</span>
+        <span class="badge-soft">📍 In-Hospital</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="soft-card p-3 p-md-4 mb-4">
+    <div class="row g-2 align-items-end">
+      <div class="col-12 col-md-6">
+        <label class="form-label fw-semibold mb-1">Search doctor / specialization</label>
+        <input id="searchInput" class="form-control" placeholder="Search: Dr. Sanjay, Skin, Hair, Cardio..." />
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label class="form-label fw-semibold mb-1">Filter department</label>
+        <select id="deptFilter" class="form-select">
+          <option value="all">All</option>
+          {% for d in doctors %}
+            {% if d.department %}
+              <option value="{{ d.department|lower }}">{{ d.department }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <div class="small text-secondary mt-1">Tip: duplicates are okay.</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label class="form-label fw-semibold mb-1">Sort</label>
+        <select id="sortBy" class="form-select">
+          <option value="name">Name (A-Z)</option>
+          <option value="exp">Experience (high → low)</option>
+          <option value="fee">Fee (low → high)</option>
+        </select>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end mt-2">
+        <button class="btn btn-outline-soft btn-modern" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  {% if doctors %}
+  <div class="row g-3" id="doctorGrid">
+    {% for doc in doctors %}
+    <div class="col-12 col-md-6 col-lg-4 doctor-item"
+         data-name="{{ doc.name|default:''|lower }}"
+         data-spec="{{ doc.specialization|default:''|lower }}"
+         data-dept="{{ doc.department|default:''|lower }}"
+         data-exp="{{ doc.experience_years|default:0 }}"
+         data-fee="{{ doc.fee|default:0 }}">
+      <div class="doctor-card p-3">
+
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="d-flex gap-3">
+            <div class="avatar">🩺</div>
+            <div>
+              <div class="fw-black h5 mb-1">{{ doc.name|default:"Doctor" }}</div>
+              <div class="meta">
+                <strong>{{ doc.specialization|default:"General Physician" }}</strong>
+                {% if doc.department %} • {{ doc.department }}{% endif %}
+              </div>
+
+              <div class="d-flex gap-2 flex-wrap mt-2">
+                {% if doc.is_available %}
+                  <span class="badge-soft"><span class="dot dot-green"></span> Available</span>
+                {% else %}
+                  <span class="badge-soft"><span class="dot dot-yellow"></span> Check timings</span>
+                {% endif %}
+                <span class="badge-soft">⭐ {{ doc.rating|default:"4.7" }}/5</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <div class="fw-black">₹ {{ doc.fee|default:"500" }}</div>
+            <div class="small text-secondary">Consultation</div>
+          </div>
+        </div>
+
+        <div class="details">
+          <div class="rowline">
+            <div class="l">Experience</div>
+            <div class="r">{{ doc.experience_years|default:"5" }} yrs</div>
+          </div>
+          <div class="rowline">
+            <div class="l">OPD Timings</div>
+            <div class="r">{{ doc.timings|default:"Mon–Sat • 10AM–2PM" }}</div>
+          </div>
+          <div class="rowline">
+            <div class="l">Room</div>
+            <div class="r">{{ doc.room|default:"OPD-01" }}</div>
+          </div>
+          <div class="rowline">
+            <div class="l">Email</div>
+            <div class="r">{{ doc.email|default:"doctor@hospital.com" }}</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+         
+          <a href="{% url 'appointmentspage' %}" class="btn btn-primary-grad btn-modern w-100">Book</a>
+          <button class="btn btn-outline-soft btn-modern w-100"
+                  data-bs-toggle="modal"
+                  data-bs-target="#doctorModal"
+                  data-name="{{ doc.name|default:'Doctor' }}"
+                  data-spec="{{ doc.specialization|default:'General Physician' }}"
+                  data-dept="{{ doc.department|default:'Department' }}"
+                  data-exp="{{ doc.experience_years|default:'5' }}"
+                  data-fee="{{ doc.fee|default:'500' }}"
+                  data-time="{{ doc.timings|default:'Mon–Sat • 10AM–2PM' }}"
+                  data-room="{{ doc.room|default:'OPD-01' }}"
+                  data-lang="{{ doc.languages|default:'English, Hindi' }}"
+                  data-bio="{{ doc.bio|default:'Experienced doctor focused on patient-first care and accurate diagnosis.' }}">
+            Full Details
+          </button>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="soft-card p-4 text-center">
+      <div class="fw-black h5 mb-1">No doctors found</div>
+      <div class="text-secondary">Add doctors in the Doctor table, then refresh this page.</div>
+    </div>
+  {% endif %}
+
+</div>
+
+
+<div class="modal fade" id="doctorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius:18px; border:1px solid rgba(15,23,42,.10);">
+      <div class="modal-header">
+        <h5 class="modal-title fw-black" id="mName">Doctor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-8">
+            <div class="text-secondary mb-1" id="mSpec">Specialization</div>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+              <span class="badge-soft" id="mDept">Department</span>
+              <span class="badge-soft">🕒 <span id="mTime">Timings</span></span>
+              <span class="badge-soft">🏷️ Room: <span id="mRoom">OPD</span></span>
+            </div>
+
+            <div class="soft-card p-3" style="box-shadow:none;">
+              <div class="fw-black mb-1">About</div>
+              <div class="text-secondary" id="mBio">Bio</div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <div class="soft-card p-3" style="box-shadow:none;">
+              <div class="fw-black mb-2">Quick Info</div>
+              <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(15,23,42,.10)!important;">
+                <div class="text-secondary fw-semibold">Experience</div>
+                <div class="fw-black"><span id="mExp">5</span> yrs</div>
+              </div>
+              <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: rgba(15,23,42,.10)!important;">
+                <div class="text-secondary fw-semibold">Fee</div>
+                <div class="fw-black">₹ <span id="mFee">500</span></div>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <div class="text-secondary fw-semibold">Languages</div>
+                <div class="fw-black text-end" id="mLang">English, Hindi</div>
+              </div>
+
+              <div class="d-grid mt-3">
+                <a href="{% url 'appointmentspage' %}" class="btn btn-primary-grad btn-modern">Book Appointment</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-soft btn-modern" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+  const doctorModal = document.getElementById('doctorModal');
+  doctorModal.addEventListener('show.bs.modal', function (event) {
+    const btn = event.relatedTarget;
+
+    document.getElementById('mName').innerText = btn.getAttribute('data-name');
+    document.getElementById('mSpec').innerText = btn.getAttribute('data-spec');
+    document.getElementById('mDept').innerText = "🏥 " + btn.getAttribute('data-dept');
+    document.getElementById('mExp').innerText = btn.getAttribute('data-exp');
+    document.getElementById('mFee').innerText = btn.getAttribute('data-fee');
+    document.getElementById('mTime').innerText = btn.getAttribute('data-time');
+    document.getElementById('mRoom').innerText = btn.getAttribute('data-room');
+    document.getElementById('mLang').innerText = btn.getAttribute('data-lang');
+    document.getElementById('mBio').innerText = btn.getAttribute('data-bio');
+  });
+
+  
+  const searchInput = document.getElementById('searchInput');
+  const deptFilter = document.getElementById('deptFilter');
+  const sortBy = document.getElementById('sortBy');
+  const resetBtn = document.getElementById('resetBtn');
+  const grid = document.getElementById('doctorGrid');
+
+  function apply(){
+    if(!grid) return;
+    const q = (searchInput.value || '').trim().toLowerCase();
+    const dep = deptFilter.value;
+
+    const items = Array.from(grid.querySelectorAll('.doctor-item'));
+
+    
+    items.forEach(el => {
+      const name = el.dataset.name || '';
+      const spec = el.dataset.spec || '';
+      const dept = el.dataset.dept || '';
+
+      const matchQ = !q || name.includes(q) || spec.includes(q) || dept.includes(q);
+      const matchD = (dep === 'all') || (dept === dep);
+
+      el.classList.toggle('hidden-by-filter', !(matchQ && matchD));
+    });
+
+    
+    const visible = items.filter(el => !el.classList.contains('hidden-by-filter'));
+
+    visible.sort((a,b)=>{
+      if(sortBy.value === 'exp'){
+        return parseInt(b.dataset.exp || 0) - parseInt(a.dataset.exp || 0);
+      }
+      if(sortBy.value === 'fee'){
+        return parseInt(a.dataset.fee || 0) - parseInt(b.dataset.fee || 0);
+      }
+     
+      return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+    });
+
+    visible.forEach(el => grid.appendChild(el));
+  }
+
+  [searchInput, deptFilter, sortBy].forEach(x => x && x.addEventListener('input', apply));
+  resetBtn && resetBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    deptFilter.value = 'all';
+    sortBy.value = 'name';
+    apply();
+  });
+
+  apply();
+</script>
+
+</body>
+</html>
