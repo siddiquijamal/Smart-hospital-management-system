@@ -2,6 +2,13 @@ from django.shortcuts import render, redirect
 from .models import Patients
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Max
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from appointments.models import Appointment
+from Doctors.models import Doctor
+
+
+ 
 
 
 
@@ -28,14 +35,11 @@ def signindetail(request):
 
         )
 
-        return redirect('loginpage')  # ✅ redirect after POST
+        return redirect('loginpage') 
 
     return render(request, 'signup.html')
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.hashers import check_password
-from Patients.models import Patients
-from Doctors.models import Doctor
+
 
 def logindetail(request):
     if request.method == "POST":
@@ -53,7 +57,7 @@ def logindetail(request):
                 role = (user.role or "").lower()
 
                 if role == 'doctor':
-                    # ✅ find the doctor record (NO password check)
+                   
                     doctor = Doctor.objects.filter(email=user.email).first()
                     if not doctor:
                         return render(request, 'login.html', {
@@ -76,19 +80,17 @@ def logindetail(request):
     return render(request, 'login.html')
 
 
-from django.shortcuts import render, redirect
-from Patients.models import Patients
-from appointments.models import Appointment 
+
 
 def patient_appointments_page(request):
-    # 1) check login via session
+    
     if 'user_id' not in request.session:
         return redirect('loginpage')
 
-    # 2) get patient object
+   
     patient = Patients.objects.get(id=request.session['user_id'])
 
-    # 3) fetch only this patient's appointments
+    
     appointments = (
         Appointment.objects
         .filter(patient=patient)
@@ -96,7 +98,7 @@ def patient_appointments_page(request):
         .order_by('-date', '-time')
     )
 
-    # 4) stats for the modern page
+  
     total = appointments.count()
     pending = appointments.filter(status='pending').count()
     approved = appointments.filter(status='approved').count()
@@ -116,14 +118,6 @@ def patient_appointments_page(request):
 
 
 
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from appointments.models import Appointment
-from Doctors.models import Doctor
-from Patients.models import Patients
-
-
 def track_token(request, appointment_id):
     if 'user_id' not in request.session:
         return redirect('loginpage')
@@ -132,9 +126,9 @@ def track_token(request, appointment_id):
     appt = get_object_or_404(Appointment, id=appointment_id, patient=patient)
 
     doctor = appt.doctor
-    now_token = doctor.current_token or 0   # ✅ if None -> 0
+    now_token = doctor.current_token or 0   
 
-    # ✅ if token not set yet, avoid math crash
+   
     if appt.token_number is None:
         return render(request, "track_token.html", {
             "appt": appt,

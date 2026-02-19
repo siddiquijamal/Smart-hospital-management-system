@@ -63,7 +63,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'siddiquijamal654@gmail.com'   # aapka sender gmail
+EMAIL_HOST_USER = 'siddiquijamal654@gmail.com'  
 EMAIL_HOST_PASSWORD = 'cvtjcidczcxhlmvx'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -140,6 +140,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGIN_URL = '/loginpage/'          # your login page URL
-LOGIN_REDIRECT_URL = '/home/'     # after successful login
-LOGOUT_REDIRECT_URL = ''            # after logout (optional)
+LOGIN_URL = '/loginpage/'          
+LOGIN_REDIRECT_URL = '/home/'     
+LOGOUT_REDIRECT_URL = ''           

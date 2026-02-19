@@ -1,20 +1,14 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+
 from django.db import transaction
 from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.utils.dateparse import parse_date
-from django.db.models import Max
-
-
-
-# Create your views here.
-
-
+from django.shortcuts import get_object_or_404, redirect
 from .models import Appointment
 from Patients.models import Patients
 from Doctors.models import Doctor
 
+# Create your views here.
 
 
 @transaction.atomic
@@ -44,7 +38,7 @@ def book_appointment(request):
             doctor=doctor,
             date=date,
             time=time,
-            token_number=None,      # ✅ token later
+            token_number=None,     
             status="pending"
         )
 
@@ -52,7 +46,7 @@ def book_appointment(request):
 
     return render(request, 'book_appointment.html', {'doctors': doctors})
 
-from django.shortcuts import get_object_or_404, redirect
+
 
 @transaction.atomic
 def approve_appointment(request, appointment_id):

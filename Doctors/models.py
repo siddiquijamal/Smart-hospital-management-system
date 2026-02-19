@@ -9,7 +9,7 @@ class Doctor(models.Model):
     specialization = models.CharField(max_length=100)
     experience = models.IntegerField(help_text="Years of experience")
     is_active = models.BooleanField(default=True)
-    current_token = models.PositiveIntegerField(default=0)  # 0 means none started
+    current_token = models.PositiveIntegerField(default=0)  #
     avg_minutes_per_patient = models.PositiveIntegerField(default=10)
 
     def __str__(self):

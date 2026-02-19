@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from Doctors.models import Doctor
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from appointments.models import Appointment
+from django.db.models import Max
 
 def doctors_detail(request):
     doctors = Doctor.objects.all().order_by("name")
@@ -7,11 +11,7 @@ def doctors_detail(request):
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from appointments.models import Appointment
-from Doctors.models import Doctor
-from django.db.models import Max
+
 
 
 def doctor_queue(request):
@@ -40,7 +40,7 @@ def next_token(request):
     doctor_id = request.session.get("doctor_id")
     doctor = get_object_or_404(Doctor, id=doctor_id)
 
-    # find next pending/approved token > current_token
+   
     nxt = Appointment.objects.filter(
         doctor=doctor,
         date=timezone.now().date(),

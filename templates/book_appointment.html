@@ -6,28 +6,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ✅ HARD FIX: base.html ke flex-row ko yahin override karo */
+ 
   body{
     font-family: 'Poppins', sans-serif !important;
     background: radial-gradient(1200px 600px at 10% 10%, #dbeafe 0%, transparent 60%),
                 radial-gradient(1200px 600px at 90% 10%, #e0f2fe 0%, transparent 60%),
                 linear-gradient(135deg, #f8fbff, #f6f8ff) !important;
 
-    /* agar base me display:flex hai to direction vertical kar do */
+  
     display: flex !important;
     flex-direction: column !important;
     min-height: 100vh !important;
   }
 
-  /* navbar/footer/content ko full width force karo */
+  
   body > *{
     width: 100% !important;
   }
 
-  /* safety: footer kabhi side me na jaye */
   footer{ width: 100% !important; }
 
-  /* ✅ Page center area */
+  
   .appointment-page{
     flex: 1;
     display: flex;
@@ -36,7 +35,7 @@
     padding: 50px 14px;
   }
 
-  /* ✅ Premium card */
+  
   .appointment-shell{
     width: 100%;
     max-width: 980px;
@@ -122,7 +121,7 @@
     margin-bottom: 18px;
   }
 
-  /* ✅ Inputs modern look */
+
   .form-label{
     font-weight: 600;
     color: rgba(15,23,42,0.85);
@@ -157,7 +156,7 @@
     color: rgba(15,23,42,0.60);
   }
 
-  /* responsive: stack panels on mobile */
+
   @media (max-width: 768px){
     .left-panel{ padding: 26px 20px; }
     .right-panel{ padding: 26px 20px; }

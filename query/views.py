@@ -13,6 +13,6 @@ def query_info(request):
             query=query_text
         )
 
-        return redirect('home')  # or index page url name
+        return redirect('home') 
 
     return redirect('home')

@@ -27,7 +27,7 @@ class Appointment(models.Model):
     rejection_reason = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        unique_together = ('doctor', 'date', 'token_number')  # ⭐ IMPORTANT
+        unique_together = ('doctor', 'date', 'token_number') 
         ordering = ['date', 'token_number']
 
     def __str__(self):
